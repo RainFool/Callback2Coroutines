@@ -10,7 +10,7 @@ public class MyClass {
         System.out.println("Method Test");
     }
 
-    //    @CoroutineMethod
+    @CoroutineMethod
     public static void testStaticFunc(int pram1, Param param2, ParamsInner paramsInner) {
         System.out.println("Method Test");
     }

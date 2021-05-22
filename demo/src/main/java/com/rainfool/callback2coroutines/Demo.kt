@@ -35,4 +35,6 @@ fun test() = runBlocking {
         val dataInIOThread = MyClassCoroutine.testFunc1()
         println("子线程展示数据：$dataInIOThread")
     }
+
+    MyClass.test()
 }
