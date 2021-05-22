@@ -1,3 +1,4 @@
+include ':app'
 include ':demo'
 include ':coroutine_annotation'
 include ':coroutine_processor'
