@@ -3,6 +3,14 @@ Transform Java callback to coroutines suspend method.
 将传统Java callback 方法转换为kotlin中的suspend方法。
 
 ## 接入指南
+根目录下加入jatpack的repository：
+```
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
+```
 在app的build.gradle中加入依赖，release_version为最新release版本。
 ```
     implementation 'com.github.RainFool.Callback2Coroutines:coroutines_annotation:release_version'
