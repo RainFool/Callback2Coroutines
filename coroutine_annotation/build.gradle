@@ -1,9 +1,10 @@
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
+apply plugin: 'maven-publish'
 
 try {
     def v = getProperty(VERSION_NAME)
-version "${v}"
+    version "${v}"
 } catch (Throwable t) {
 
 }
@@ -12,6 +13,19 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.java
+                groupId = "$group_id"
+                artifactId = 'coroutines_annotation'
+                version = "$public_version"
+            }
+        }
+    }
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
