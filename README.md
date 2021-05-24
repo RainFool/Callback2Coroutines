@@ -2,6 +2,38 @@
 Transform Java callback to coroutines suspend method.  
 将传统Java callback 方法转换为kotlin中的suspend方法。
 
+## 接入指南
+在app的build.gradle中加入依赖，release_version为最新release版本。
+```
+    implementation 'com.github.RainFool.Callback2Coroutines:coroutines_annotation:release_version'
+    kapt 'com.github.RainFool.Callback2Coroutines:coroutines_processor:release_version'
+```
+需要先使用`CallbackTransformer`注解标记一个转换器，作用是将协程和callback连接，比如：
+```
+/**
+ * 默认的转换器
+ * @author rainfool
+ */
+object CoroutinesTransformer {
+    @CallbackTransformer
+    fun <T> defaultTransformer(it: Continuation<CoroutineResult<T>>): IResultListener<T> {
+        return object : IResultListener<T> {
+            override fun onSuccess(result: T) {
+                it.resume(CoroutineResult(true, result))
+            }
+
+            override fun onError(errorCode: Int, errorMessage: String?) {
+                it.resume(CoroutineResult<T>(false, null, errorCode, ""))
+            }
+
+        }
+    }
+}
+```
+最后，在含有callback的方法上标记`@CoroutineMethod`即可，编译完模块后会自动生成含有协程方法的类。
+
+## 原理简述
+
 在维护老项目时，经常遇到使用callback进行回调，比如下列代码，在MyClass中声明了一个静态方法和一个普通方法：
 ```
 // 静态方法
